@@ -1,93 +1,106 @@
-# tomcat
+# Tomcat
 
+This Docker image is managed and kept up to date by [epicsoft LLC](https://epicsoft.one).
 
+Tomcat based on official [tomcat](https://hub.docker.com/_/tomcat) image.
 
-## Getting started
+This Docker image automatically passes Docker environments to the application.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.com/epicsoft-networks/tomcat.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.com/epicsoft-networks/tomcat/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
+* Base image:https://hub.docker.com/_/tomcat
+* Dockerfiles: https://gitlab.com/epicsoft-networks/tomcat/tree/main
+* Repository: https://gitlab.com/epicsoft-networks/tomcat/tree/main
+* Container-Registry: https://gitlab.com/epicsoft-networks/tomcat/container_registry
+* Docker Hub: https://hub.docker.com/r/epicsoft/tomcat
 
 ## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+### TL;DR - for technicians
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+```
+Docker environments                              Tomcat App environments
+  - APP_DATABASE_NAME="exampleDatabaseName"        - app.database.name=exampleDatabaseName
+  - APP_CUSTOM_ENV1=Hello from Docker 1            - app.custom.env1=Hello from Docker 1
+  - APP_CUSTOM_ENV2="Hello from Docker 2"          - app.custom.env2=Hello from Docker 2
+  - APP_CUSTOM_ENV3='Hello from Docker 3'          - app.custom.env3=Hello from Docker 3
+                                                 example for use in configuration: ${app.database.name}
+```
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+### A little more detailed
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+All environments with the prefix "APP_" are passed on to the application.  
+The environment variable can be used in the application or configuration.  
+The name of the environment variable is written in lower case and separated with dots "." instead of underscores "_", for example `APP_DATABASE_NAME` is called `app.database.name` in the application.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+Example for use in configuration: `${app.database.name}`.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Single `'` and double `"` quotation marks can be used in Docker environments, these are removed for transfer to the application.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+## Versions
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+`latest` based on `tomcat:latest` - build `weekly`
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+`11-jre21` based on `tomcat:11-jre21` - build `weekly`
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+`10-jre21` based on `tomcat:10-jre21` - build `weekly`
+
+`10-jre17` based on `tomcat:10-jre17` - build `weekly`
+
+`10-jre11` based on `tomcat:10-jre11` - build `weekly`
+
+`9-jre21` based on `tomcat:9-jre21` - build `weekly`
+
+`9-jre17` based on `tomcat:9-jre17` - build `weekly`
+
+`9-jre11` based on `tomcat:9-jre11` - build `weekly`
+
+`9.0-jre11` based on `tomcat:9.0-jre11` - build `weekly`
+
+All versions match the base image. If you need more, just ask.
+
+## Examples
+
+### Example use in a docker-compose file
+
+`docker-compose.yml`
+
+```yaml
+version: '3.8'
+services:
+  tomcat:
+    image: epicsoft/tomcat:latest
+    container_name: tomcat
+    hostname: tomcat
+    restart: unless-stopped
+    environment:
+      - APP_DATABASE_NAME="exampleDatabaseName"
+      - APP_CUSTOM_ENV1=Hello from Docker 1
+      - APP_CUSTOM_ENV2="Hello from Docker 2"
+      - APP_CUSTOM_ENV3='Hello from Docker 3'
+    volumes:
+      - /srv/tomcat/webapps:/usr/local/tomcat/webapps:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    tmpfs:
+      - /usr/local/tomcat/temp:exec,mode=777,uid=0,gid=0
+    networks:
+      - tomcat
+    ports:
+      - "8080:8080"
+networks:
+  tomcat:
+    name: tomcat
+```
+
+`Tomcat logs` _(shortened / sequence of rows does not have to match)_
+```
+INFO [main] ...catalina...log Command line argument: -Dapp.database.name=exampleDatabaseName
+INFO [main] ...catalina...log Command line argument: -Dapp.custom.env1=Hello from Docker 1
+INFO [main] ...catalina...log Command line argument: -Dapp.custom.env2=Hello from Docker 2
+INFO [main] ...catalina...log Command line argument: -Dapp.custom.env3=Hello from Docker 3
+```
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+MIT License see [LICENSE](https://gitlab.com/epicsoft-networks/tomcat/blob/master/LICENSE)
+
+Please note that the MIT license only applies to the files created by epicsoft LLC. Other software may be licensed under other licenses.
