@@ -29,7 +29,7 @@ Docker environments                              Tomcat App environments
 
 All environments with the prefix "APP_" are passed on to the application.  
 The environment variable can be used in the application or configuration.  
-The name of the environment variable is written in lower case and separated with dots "." instead of underscores "_", for example `APP_DATABASE_NAME` is called `app.database.name` in the application.
+The name of the environment variable is written in lower case and separated with dots "." instead of underscores "_", for example `APP_DATABASE_NAME` is called `app.database.name` in the application or configuration.
 
 Example for use in configuration: `${app.database.name}`.
 

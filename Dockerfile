@@ -1,6 +1,7 @@
 ARG IMAGE_TAG=latest
 FROM tomcat:$IMAGE_TAG
 
+ARG IMAGE_TAG
 ARG BUILD_DATE
 LABEL org.label-schema.name="Ansible" \
       org.label-schema.description="Tomcat based on official Tomcat image" \
