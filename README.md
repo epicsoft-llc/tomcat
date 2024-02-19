@@ -33,13 +33,19 @@ The name of the environment variable is written in lower case and separated with
 
 Example for use in configuration: `${app.database.name}`.
 
-Single `'` and double `"` quotation marks can be used in Docker environments, these are removed for transfer to the application.
+Single `'` and double `"` quotation marks can be used in Docker environments, 
+these are removed for transfer to the application.
+
+If you use your own `setenv.sh` file and still use the functionality of the Docker envirements, 
+then add the following line to your own `setenv.sh` file.
+
+```source "$(dirname "$0")/dockerenv.sh"```
 
 ## Versions
 
 `latest` based on `tomcat:latest` - build `weekly`
 
-`11-jre21` based on `tomcat:11-jre21` - build `weekly`
+`11.0-jre21` based on `tomcat:11.0-jre21` - build `weekly`
 
 `10-jre21` based on `tomcat:10-jre21` - build `weekly`
 
@@ -92,11 +98,32 @@ networks:
 ```
 
 `Tomcat logs` _(shortened / sequence of rows does not have to match)_
-```
+
+```log
 INFO [main] ...catalina...log Command line argument: -Dapp.database.name=exampleDatabaseName
 INFO [main] ...catalina...log Command line argument: -Dapp.custom.env1=Hello from Docker 1
 INFO [main] ...catalina...log Command line argument: -Dapp.custom.env2=Hello from Docker 2
 INFO [main] ...catalina...log Command line argument: -Dapp.custom.env3=Hello from Docker 3
+```
+
+### Example of using your own `setenv.sh`
+
+`docker-compose.yml` _(shortened)_
+
+```yml
+volumes:
+  - /srv/tomcat/setenv.sh:/usr/local/tomcat/bin/setenv.sh:ro
+```
+
+`setenv.sh`
+
+```bash
+#!/bin/bash
+
+# <CUSTOM CODE>
+
+#### Load Docker environments
+source "$(dirname "$0")/dockerenv.sh"
 ```
 
 ## License
