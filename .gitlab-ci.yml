@@ -87,6 +87,6 @@ uploadReadme:
       -e DOCKERHUB_USERNAME=${DOCKER_HUB_USER}
       -e DOCKERHUB_PASSWORD=${DOCKER_HUB_TOKEN}
       -e DOCKERHUB_REPOSITORY=${DOCKER_REGISTRY}
-      -e SHORT_DESCRIPTION="This Docker image automatically passes Docker environments to the application"
+      -e SHORT_DESCRIPTION="Automatically passes Docker environments to the application, based on official Tomcat image"
       -e README_FILEPATH='/workspace/README.md'
         peterevans/dockerhub-description:latest

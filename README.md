@@ -4,7 +4,7 @@ This Docker image is managed and kept up to date by [epicsoft LLC](https://epics
 
 Tomcat based on official [tomcat](https://hub.docker.com/_/tomcat) image.
 
-This Docker image automatically passes Docker environments to the application.
+Automatically passes Docker environments to the application, based on official Tomcat image.
 
 * Base image:https://hub.docker.com/_/tomcat
 * Dockerfiles: https://gitlab.com/epicsoft-networks/tomcat/tree/main
