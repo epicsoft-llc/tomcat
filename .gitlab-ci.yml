@@ -32,10 +32,10 @@ tomcatLatest:
     VERSION: "latest"
   script: *scriptBuild
 
-tomcat11-jre21:
+tomcat11.0-jre21:
   stage: build
   variables:
-    VERSION: "11-jre21"
+    VERSION: "11.0-jre21"
   script: *scriptBuild
 
 tomcat10-jre21:
