@@ -39,7 +39,7 @@ these are removed for transfer to the application.
 If you use your own `setenv.sh` file and still use the functionality of the Docker envirements, 
 then add the following line to your own `setenv.sh` file.
 
-```source "$(dirname "$0")/dockerenv.sh"```
+`source $(dirname "$0")/dockerenv.sh`
 
 ## Versions
 
@@ -123,7 +123,7 @@ volumes:
 # <CUSTOM CODE>
 
 #### Load Docker environments
-source "$(dirname "$0")/dockerenv.sh"
+source $(dirname "$0")/dockerenv.sh
 ```
 
 ## License
