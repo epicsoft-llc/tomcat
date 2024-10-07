@@ -6,7 +6,7 @@ Tomcat based on official [tomcat](https://hub.docker.com/_/tomcat) image.
 
 Automatically passes Docker environments to the application, based on official Tomcat image.
 
-* Base image:https://hub.docker.com/_/tomcat
+* Base image: https://hub.docker.com/_/tomcat
 * Dockerfiles: https://gitlab.com/epicsoft-networks/tomcat/tree/main
 * Repository: https://gitlab.com/epicsoft-networks/tomcat/tree/main
 * Container-Registry: https://gitlab.com/epicsoft-networks/tomcat/container_registry

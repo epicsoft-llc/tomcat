@@ -4,6 +4,9 @@ stages:
 
 image: docker:dind
 
+services:
+  - docker:dind
+
 variables:
   DOCKER_REGISTRY: "epicsoft/tomcat"
 
