@@ -89,4 +89,4 @@ uploadReadme:
       -e DOCKERHUB_REPOSITORY=${DOCKER_REGISTRY}
       -e SHORT_DESCRIPTION="Automatically passes Docker environments to the application, based on official Tomcat image"
       -e README_FILEPATH='/workspace/README.md'
-        peterevans/dockerhub-description:latest
+        peterevans/dockerhub-description:4
