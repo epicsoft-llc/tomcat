@@ -34,7 +34,13 @@ The name of the environment variable is written in lower case and separated with
 Example for use in configuration: `${app.database.name}`.
 
 Single `'` and double `"` quotation marks can be used in Docker environments, 
-these are removed for transfer to the application.
+these are removed for transfer to the application.  
+Only a matching pair around the whole value is removed, a value like `he said "hi"` keeps its quotation marks.  
+Apart from that the value is passed on unchanged, a `$`, a backtick or a `$(...)` in a value stays what it is and is never executed.
+
+After the prefix `APP_` the name may only contain letters, digits and underscores `_`.  
+An environment like `APP_MY NAME` cannot become a property name, it is ignored and a line is written to the log.  
+Upper and lower case are both accepted, `app_database_name` works like `APP_DATABASE_NAME`.
 
 If you use your own `setenv.sh` file and still use the functionality of the Docker envirements, 
 then add the following line to your own `setenv.sh` file.
@@ -45,13 +51,19 @@ then add the following line to your own `setenv.sh` file.
 
 `latest` based on `tomcat:latest` - build `weekly`
 
+`11.0-jre25` based on `tomcat:11.0-jre25` - build `weekly`
+
 `11.0-jre21` based on `tomcat:11.0-jre21` - build `weekly`
+
+`10-jre25` based on `tomcat:10-jre25` - build `weekly`
 
 `10-jre21` based on `tomcat:10-jre21` - build `weekly`
 
 `10-jre17` based on `tomcat:10-jre17` - build `weekly`
 
 `10-jre11` based on `tomcat:10-jre11` - build `weekly`
+
+`9-jre25` based on `tomcat:9-jre25` - build `weekly`
 
 `9-jre21` based on `tomcat:9-jre21` - build `weekly`
 
@@ -63,6 +75,16 @@ then add the following line to your own `setenv.sh` file.
 
 All versions match the base image. If you need more, just ask.
 
+A tag is the version: it names the Tomcat and the JRE in the image, and it is rebuilt weekly, so it follows the official image.  
+Which versions an image really holds is written into it.
+
+```
+docker image inspect --format '{{index .Config.Labels "image.tomcat.version"}}' epicsoft/tomcat:11.0-jre21
+docker image inspect --format '{{index .Config.Labels "image.java.version"}}' epicsoft/tomcat:11.0-jre21
+```
+
+Changes to this image are recorded in [CHANGELOG.md](https://gitlab.com/epicsoft-networks/tomcat/blob/main/CHANGELOG.md).
+
 ## Examples
 
 ### Example use in a docker-compose file
@@ -70,7 +92,6 @@ All versions match the base image. If you need more, just ask.
 `docker-compose.yml`
 
 ```yaml
-version: '3.8'
 services:
   tomcat:
     image: epicsoft/tomcat:latest

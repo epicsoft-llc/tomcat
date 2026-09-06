@@ -14,5 +14,5 @@ end_of_line = lf
 max_line_length = off
 trim_trailing_whitespace = false
 
-[*.{yml, yaml}]
+[*.{yml,yaml}]
 max_line_length = 180

@@ -1,0 +1,9 @@
+# The image copies 'setenv.sh' and nothing else. Everything else would only make the
+# build context bigger - the test environment above all, which is what changes most
+# often and whose logs would otherwise travel to the daemon on every build.
+#
+# Written as a whitelist on purpose: a new file next to this one is excluded without
+# anyone having to remember to add it here.
+*
+!setenv.sh
+!Dockerfile
