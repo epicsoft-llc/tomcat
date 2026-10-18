@@ -21,6 +21,33 @@ came out of. Entries here are dated, because there is no number to give them.
 
 ---
 
+## 2026-10-18
+
+A mirror on GitHub, and a pipeline that keeps its tokens out of the process
+list. The image itself does not change.
+
+### Added
+
+- **A mirror on GitHub**: `github.com/epicsoft-llc/tomcat`. GitLab stays the
+source, issues are welcome on both.
+
+### Security
+
+- **The pipeline keeps its tokens out of the process list.** The registry
+logins passed them with `-p` and the upload of the Docker Hub description with
+`-e NAME=value`, where every process on the runner could read them. They go in
+over stdin and through the environment now.
+
+### Changed
+
+- The short description is the same text on Docker Hub, GitLab and GitHub, and
+the image labels carry it too.
+- README: current GitLab links, the GitHub mirror and a section on reporting
+problems. The upload stops if the README ever exceeds the 25,000 characters
+Docker Hub takes, instead of publishing a cut-off text.
+
+---
+
 ## 2026-09-06
 
 The environment translation was rewritten. Values are now passed on as they were

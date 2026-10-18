@@ -11,9 +11,10 @@ services:
 variables:
   DOCKER_REGISTRY: "epicsoft/tomcat"
 
+# The tokens go in over stdin: '-p' would put them in the process list of the runner.
 before_script:
-  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-  - docker login -u="$DOCKER_HUB_USER" -p="$DOCKER_HUB_TOKEN"
+  - echo "$CI_JOB_TOKEN" | docker login -u gitlab-ci-token --password-stdin "$CI_REGISTRY"
+  - echo "$DOCKER_HUB_TOKEN" | docker login -u "$DOCKER_HUB_USER" --password-stdin
 
 after_script:
   - docker logout $CI_REGISTRY
@@ -144,14 +145,22 @@ uploadReadme:
     # not exist, so the mount would be an empty directory and the upload would push a
     # description that is not the README. 'docker cp' goes through the API and does not
     # care whose filesystem the file is on.
+    # Docker Hub takes at most 25,000 characters - counted in bytes here, which is stricter
+    - |
+      size=$(wc -c < README.md)
+      if [ "$size" -gt 25000 ]; then
+        echo "README.md has $size bytes, Docker Hub takes 25000"
+        exit 1
+      fi
     - docker volume create tomcat-readme
     - docker create --name tomcat-readme-carrier -v tomcat-readme:/workspace alpine:latest true
     - docker cp README.md tomcat-readme-carrier:/workspace/README.md
-    - docker run --rm -v tomcat-readme:/workspace
+    # '-e NAME' without a value reads it from the environment, so the token stays out of the process list
+    - DOCKERHUB_PASSWORD="$DOCKER_HUB_TOKEN" docker run --rm -v tomcat-readme:/workspace
       -e DOCKERHUB_USERNAME=${DOCKER_HUB_USER}
-      -e DOCKERHUB_PASSWORD=${DOCKER_HUB_TOKEN}
+      -e DOCKERHUB_PASSWORD
       -e DOCKERHUB_REPOSITORY=${DOCKER_REGISTRY}
-      -e SHORT_DESCRIPTION="Automatically passes Docker environments to the application, based on official Tomcat image"
+      -e SHORT_DESCRIPTION="Official Tomcat image with APP_ environment variables as system properties - rebuilt weekly"
       -e README_FILEPATH='/workspace/README.md'
         peterevans/dockerhub-description:4
     - docker rm -f tomcat-readme-carrier

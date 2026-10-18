@@ -2,15 +2,16 @@
 
 This Docker image is managed and kept up to date by [epicsoft LLC](https://epicsoft.one).
 
-Tomcat based on official [tomcat](https://hub.docker.com/_/tomcat) image.
+The official [tomcat](https://hub.docker.com/_/tomcat) image, extended by one feature: Docker environment variables
+with the prefix `APP_` are passed to the application as system properties.
 
-Automatically passes Docker environments to the application, based on official Tomcat image.
-
-* Base image: https://hub.docker.com/_/tomcat
-* Dockerfiles: https://gitlab.com/epicsoft-networks/tomcat/tree/main
-* Repository: https://gitlab.com/epicsoft-networks/tomcat/tree/main
-* Container-Registry: https://gitlab.com/epicsoft-networks/tomcat/container_registry
+* Base image: https://hub.docker.com/_/tomcat, platform `linux/amd64`
+* Dockerfile: https://gitlab.com/epicsoft-networks/tomcat/-/blob/main/Dockerfile
+* Repository: https://gitlab.com/epicsoft-networks/tomcat, mirrored to [GitHub](https://github.com/epicsoft-llc/tomcat) — issues are welcome on both; code changes only as merge requests on GitLab, the mirror overwrites anything pushed to GitHub
+* Container registry: https://gitlab.com/epicsoft-networks/tomcat/container_registry
 * Docker Hub: https://hub.docker.com/r/epicsoft/tomcat
+* Changelog: https://gitlab.com/epicsoft-networks/tomcat/-/blob/main/CHANGELOG.md
+* License: MIT
 
 ## Description
 
@@ -42,7 +43,7 @@ After the prefix `APP_` the name may only contain letters, digits and underscore
 An environment like `APP_MY NAME` cannot become a property name, it is ignored and a line is written to the log.  
 Upper and lower case are both accepted, `app_database_name` works like `APP_DATABASE_NAME`.
 
-If you use your own `setenv.sh` file and still use the functionality of the Docker envirements, 
+If you use your own `setenv.sh` file and still use the functionality of the Docker environments, 
 then add the following line to your own `setenv.sh` file.
 
 `source $(dirname "$0")/dockerenv.sh`
@@ -83,7 +84,7 @@ docker image inspect --format '{{index .Config.Labels "image.tomcat.version"}}' 
 docker image inspect --format '{{index .Config.Labels "image.java.version"}}' epicsoft/tomcat:11.0-jre21
 ```
 
-Changes to this image are recorded in [CHANGELOG.md](https://gitlab.com/epicsoft-networks/tomcat/blob/main/CHANGELOG.md).
+Changes to this image are recorded in the [changelog](https://gitlab.com/epicsoft-networks/tomcat/-/blob/main/CHANGELOG.md).
 
 ## Examples
 
@@ -147,8 +148,15 @@ volumes:
 source $(dirname "$0")/dockerenv.sh
 ```
 
+## Reporting problems
+
+Issues are welcome on [GitLab](https://gitlab.com/epicsoft-networks/tomcat/-/issues) and
+[GitHub](https://github.com/epicsoft-llc/tomcat/issues). Please report a security problem as a
+**confidential issue** on GitLab instead of a public one.
+
 ## License
 
-MIT License see [LICENSE](https://gitlab.com/epicsoft-networks/tomcat/blob/main/LICENSE)
+[MIT](https://gitlab.com/epicsoft-networks/tomcat/-/blob/main/LICENSE) — Copyright (c) 2024-2026 epicsoft LLC / Alexander Schwarz
 
-Please note that the MIT license only applies to the files created by epicsoft LLC. Other software may be licensed under other licenses.
+The MIT license applies only to files created by epicsoft LLC. Third-party software in the image — Apache Tomcat, the
+JRE and the official `tomcat` image — remains under its own licenses.
