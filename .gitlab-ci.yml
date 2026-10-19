@@ -165,3 +165,56 @@ uploadReadme:
         peterevans/dockerhub-description:4
     - docker rm -f tomcat-readme-carrier
     - docker volume rm tomcat-readme
+
+# A git tag is the date of a CHANGELOG.md entry; its pipeline only turns that entry into the GitHub release
+github-release:
+  stage: release
+  image: epicsoft/ci:latest
+  services: []
+  before_script: []
+  after_script: []
+  needs: []
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^\d{4}-\d{2}-\d{2}$/
+  variables:
+    GITHUB_REPO: "epicsoft-llc/${CI_PROJECT_NAME}"
+  script:
+    - |
+      if [ -z "${GITHUB_TOKEN:-}" ]; then
+        echo "GITHUB_TOKEN is empty - it is a protected variable, so the tag has to be protected"
+        exit 1
+      fi
+      api="https://api.github.com/repos/${GITHUB_REPO}"
+      # curl reads the header from a file, so the token stays out of the process list
+      auth_file=$(mktemp)
+      printf 'Authorization: Bearer %s\n' "${GITHUB_TOKEN}" > "$auth_file"
+      auth="@$auth_file"
+      # the lines below '## <date>' up to the next entry or the next '---', without the blank lines around them
+      notes=$(awk -v head="## ${CI_COMMIT_TAG}" '
+        $0 == head { found = 1; next }
+        found && (/^## / || $0 == "---") { exit }
+        found { line[++n] = $0 }
+        END {
+          while (n > 0 && line[n] ~ /^[[:space:]]*$/) n--
+          for (i = 1; i <= n; i++) if (started || line[i] !~ /^[[:space:]]*$/) { started = 1; print line[i] }
+        }' CHANGELOG.md)
+      if [ -z "$notes" ]; then
+        echo "CHANGELOG.md has no entry for ${CI_COMMIT_TAG}"
+        exit 1
+      fi
+      if curl -sf -H "$auth" "$api/releases/tags/${CI_COMMIT_TAG}" > /dev/null; then
+        echo "Release ${CI_COMMIT_TAG} already exists on GitHub"
+        exit 0
+      fi
+      tries=0
+      until curl -sf -H "$auth" "$api/git/ref/tags/${CI_COMMIT_TAG}" > /dev/null; do
+        tries=$((tries + 1))
+        if [ "$tries" -ge 60 ]; then
+          echo "Tag ${CI_COMMIT_TAG} did not reach GitHub within 10 minutes - check the push mirror"
+          exit 1
+        fi
+        sleep 10
+      done
+      jq -n --arg tag "${CI_COMMIT_TAG}" --arg body "$notes" '{tag_name: $tag, name: $tag, body: $body}' \
+        | curl -sS --fail-with-body -X POST -H "$auth" -H "Accept: application/vnd.github+json" "$api/releases" -d @- > /dev/null
+      echo "Release ${CI_COMMIT_TAG} created on GitHub"

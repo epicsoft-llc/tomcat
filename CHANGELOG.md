@@ -18,6 +18,9 @@ docker image inspect --format '{{index .Config.Labels "image.tomcat.version"}}' 
 `image.java.version` says the same for the JRE, and
 `org.opencontainers.image.base.digest` names the exact official image the build
 came out of. Entries here are dated, because there is no number to give them.
+Each date is also a git tag with a release on GitHub. New Tomcat and JRE
+releases from the weekly build are summed up once a quarter, a fix rated
+important or critical right away.
 
 ---
 

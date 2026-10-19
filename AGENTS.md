@@ -155,6 +155,17 @@ build argument means editing both.
 `CHANGELOG.md` follows from this: dated entries, no numbers, because there is no number to give
 them. A change worth telling users about gets an entry under today's date.
 
+Each entry is also a git tag of its date, such as `2026-10-18`, set on the green commit of `main`
+that carries it; until then the entry may still grow, once tagged it is fixed and a correction goes
+into the next entry. The tag pipeline runs `github-release`, which creates the GitHub release from
+that entry, and `test`; it builds nothing. Tags are protected, because `GITHUB_TOKEN` is a protected
+variable.
+
+New Tomcat and JRE releases reach the images with the weekly build and need no commit. They get one
+entry per quarter, after the quarterly Java update in January, April, July and October, listing the
+Tomcat and JRE versions of the latest build; a release that fixes a vulnerability rated important or
+critical gets its entry right away.
+
 ## Pipeline structure (`.gitlab-ci.yml`)
 
 | Job | Trigger | Action |
@@ -162,15 +173,16 @@ them. A change worth telling users about gets an entry under today's date.
 | `test` | every push | `bash test/test.sh default` — a red test keeps the build stage from running |
 | `tomcatLatest`, `tomcat<tag>` | branch `main` (push, weekly schedule) | read the versions of the official image, build, test (`version.sh` and one `APP_` check), push to both registries |
 | `uploadReadme` | branch `main` (push, weekly schedule) | README as Docker Hub description, at most 25,000 bytes |
+| `github-release` | tag `YYYY-MM-DD` | the GitHub release from the changelog entry of that date |
 
-CI variables: `DOCKER_HUB_USER` and `DOCKER_HUB_TOKEN` (masked). The tokens go in over stdin and
-through the environment, never onto a command line, where every process on the runner could read
-them.
+CI variables: `DOCKER_HUB_USER` (protected), `DOCKER_HUB_TOKEN` and `GITHUB_TOKEN` (masked,
+protected). The tokens go in over stdin and through the environment, never onto a command line,
+where every process on the runner could read them.
 
 **GitHub mirror:** a push mirror in the GitLab project settings (Repository → Mirroring
 repositories) with its own token — not part of the pipeline. Changes are never pushed to GitHub
-directly; the mirror would overwrite them. There are no release tags and no GitHub releases, see
-Versioning.
+directly; the mirror would overwrite them. Every changelog entry is a git tag and a GitHub release,
+see Versioning.
 
 ## Conventions
 
