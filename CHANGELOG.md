@@ -24,6 +24,34 @@ important or critical right away.
 
 ---
 
+## 2026-11-03
+
+The quarterly summary of the weekly builds, due now for the fixes rated
+important in it. Since the weekly build of 2026-11-01 every tag holds Tomcat
+11.0.27, 10.1.61 or 9.0.123.
+
+### Security
+
+- **Tomcat 11.0.27, 10.1.61 and 9.0.123** (released 2026-10-12) fix two issues
+rated important: CVE-2026-101356 (HTTP/2 request and response mix-up after an
+error during async processing) and CVE-2026-101296 (JNDIRealm bind credential
+validation fails open for non-GSSAPI SASL mechanisms). Tomcat 11.0.27 also fixes
+CVE-2026-103119 (AJP response mix-up, important).
+- **Tomcat 11.0.26, 10.1.60 and 9.0.122** (released 2026-09-15) reached the
+images with the weekly builds after their release and were not named here yet.
+They fix four issues rated important: CVE-2026-86350 (request header mix-up),
+CVE-2026-78383 (AJP denial of service via a missing request body),
+CVE-2026-77791 (denial of service through a busy wait on WebSocket close) and
+CVE-2026-76183 (bypass of security constraints for WebSocket endpoints).
+
+### Changed
+
+- **The versions in the images** after the weekly build of 2026-11-01: Tomcat
+11.0.27, 10.1.61 and 9.0.123; JRE 25.0.5, 21.0.13, 17.0.20.1 and 11.0.32.1, as
+the official images ship them.
+
+---
+
 ## 2026-10-18
 
 A mirror on GitHub, and a pipeline that keeps its tokens out of the process
