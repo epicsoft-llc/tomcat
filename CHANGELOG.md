@@ -24,6 +24,18 @@ important or critical right away.
 
 ---
 
+## 2026-11-19
+
+### Security
+
+- **The Ubuntu packages are upgraded when an image is built.** Until now every tag kept the package state of the
+official image it was built on, and the official images are not rebuilt for every Ubuntu update: after the weekly
+build of 2026-11-15, `10-jre17` and `9-jre11` still lacked the security updates for libc6 (`2.43-2ubuntu2.7`) and
+perl-base from `resolute-security`. The Tomcat and JRE versions do not change with it, both come from the official
+image.
+
+---
+
 ## 2026-11-03
 
 The quarterly summary of the weekly builds, due now for the fixes rated

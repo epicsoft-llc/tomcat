@@ -46,6 +46,11 @@ LABEL image.name="epicsoft_tomcat" \
 LABEL image.tomcat.version=${TOMCAT_VERSION} \
       image.java.version=${JAVA_VERSION}
 
+# The official image keeps the Ubuntu packages of its own build date - the upgrade brings the security fixes since.
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
+ && rm -rf /var/lib/apt/lists/*
+
 COPY setenv.sh /usr/local/tomcat/bin/setenv.sh
 COPY setenv.sh /usr/local/tomcat/bin/dockerenv.sh
 
